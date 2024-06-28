@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<div style="padding: 100px;">
+    <div class="container" role="alert">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="row" colspan="5" class="text-center">CARRITO</th>
+                </tr>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if request.session.carrito.items %}
+                    {% for key, value in request.session.carrito.items %}
+                        <tr>
+                            <td><img src="{{ value.imagen }}" alt="{{ value.nombre }}" width="50"></td>
+                            <td>{{ value.nombre }}</td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <a href="{% url 'restar' value.producto_id %}" class="btn btn-dark btn-sm">-</a>
+                                    </span>
+                                    <input type="text" class="form-control text-center" value="{{ value.cantidad }}" style="max-width: 50px;" disabled>
+                                    <span class="input-group-btn">
+                                        <a href="{% url 'agregar_otro' value.producto_id %}" class="btn btn-dark btn-sm">+</a>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>${{ value.acumulado }}</td>
+                            <td>
+                                <a href="#" class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="alert alert-danger text-center">Sin Productos</div>
+                        </td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th scope="row" colspan="4">Total:</th>
+                    <td colspan="2">$ {{ total_carrito }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row text-center">
+        <div class="col-6"><a href="{% url 'limpiar' %}" class="btn btn-danger">Limpiar</a></div>
+        <div class="col-6">
+            <form action="{% url 'procesar_pedido' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Comprar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<script>
+    window.location.href = "{% url 'login' %}"
+</script>
+
+{% endif %}
+
+{% endblock %}

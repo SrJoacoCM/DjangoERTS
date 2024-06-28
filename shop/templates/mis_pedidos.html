@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="padding: 100px;">
+    <div class="container" role="alert">
+        <h2 class="text-center">MIS PEDIDOS</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio Unitario</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if pedidos %}
+                    {% for pedido in pedidos %}
+                        {% for item in pedido.items.all %}
+                            <tr>
+                                <td>{{ forloop.parentloop.counter }}</td>
+                                <td>{{ pedido.creado_en }}</td>
+                                <td>{{ item.producto.nombre }}</td>
+                                <td>{{ item.cantidad }}</td>
+                                <td>${{ item.producto.precio }}</td>
+                                <td>${{ item.subtotal }}</td>
+                                <td>{{ pedido.estado }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% empty %}
+                        <tr>
+                            <td colspan="7">
+                                <div class="alert alert-warning text-center">No tienes pedidos realizados.</div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7">
+                            <div class="alert alert-warning text-center">No tienes pedidos realizados.</div>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

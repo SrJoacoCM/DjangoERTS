@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="padding: 100px;">
+    <div class="container">
+        <h2 class="text-center">Panel de Pedidos</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Cantidad de Productos</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                    <tr>
+                        <td>{{ pedido.id }}</td>
+                        <td>{{ pedido.creado_en }}</td>
+                        <td>{{ pedido.usuario.username }}</td>
+                        <td>{{ pedido.items.count }}</td>  {# Contar la cantidad de productos en el pedido #}
+                        <td>${{ pedido.total }}</td>  {# Suponiendo que tienes un campo total en tu modelo Pedido #}
+                        <td>
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
+                                <select name="nuevo_estado" class="form-control" onchange="this.form.submit()">
+                                    <option value="PENDIENTE" {% if pedido.estado == 'PENDIENTE' %} selected {% endif %}>Pendiente</option>
+                                    <option value="DESPACHO" {% if pedido.estado == 'DESPACHO' %} selected {% endif %}>En Despacho</option>
+                                    <option value="TRANSITO" {% if pedido.estado == 'TRANSITO' %} selected {% endif %}>En Tránsito</option>
+                                    <option value="ENTREGADO" {% if pedido.estado == 'ENTREGADO' %} selected {% endif %}>Entregado</option>
+                                </select>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
