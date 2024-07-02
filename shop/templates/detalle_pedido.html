@@ -1,0 +1,40 @@
+<!-- shop/templates/detalle_pedido.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="padding: 100px;">
+    <div class="container">
+        <h2 class="text-center">Detalles del Pedido</h2>
+        <p><strong>Nro. orden:</strong> {{ pedido.id }}</p>
+        <p><strong>Cliente:</strong> {{ pedido.usuario.username }}</p>
+        <p><strong>Fecha:</strong> {{ pedido.creado_en }}</p>
+        <p><strong>Estado:</strong> {{ pedido.estado }}</p>
+        
+        <h3>Productos</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio Unitario</th>
+                    <th scope="col">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in pedido.items.all %}
+                    <tr>
+                        <td>{{ item.producto.nombre }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>${{ item.producto.precio }}</td>
+                        <td>${{ item.subtotal }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p><strong>Total:</strong> ${{ pedido.total }}</p>
+        <a href="{% url 'panel_pedidos' %}" class="btn btn-outline-primary">Volver</a>
+    </div>
+</div>
+{% endblock %}

@@ -4,16 +4,17 @@
 
 <div style="padding: 100px;">
     <div class="container">
-        <h2 class="text-center">Panel de Pedidos</h2>
+        <h2 class="text-center mb-5 ">Panel de Pedidos</h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">Nro. Orden</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Usuario</th>
                     <th scope="col">Cantidad de Productos</th>
                     <th scope="col">Total</th>
                     <th scope="col">Estado</th>
+                    <th scope="col">Detalles</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,8 +23,8 @@
                         <td>{{ pedido.id }}</td>
                         <td>{{ pedido.creado_en }}</td>
                         <td>{{ pedido.usuario.username }}</td>
-                        <td>{{ pedido.items.count }}</td>  {# Contar la cantidad de productos en el pedido #}
-                        <td>${{ pedido.total }}</td>  {# Suponiendo que tienes un campo total en tu modelo Pedido #}
+                        <td>{{ pedido.items.count }}</td>  
+                        <td>${{ pedido.total }}</td>  
                         <td>
                             <form method="post">
                                 {% csrf_token %}
@@ -36,6 +37,7 @@
                                 </select>
                             </form>
                         </td>
+                        <td><a href="{% url 'detalle_pedido' pedido.id %}" class="btn btn-outline-primary">Ver Detalles</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

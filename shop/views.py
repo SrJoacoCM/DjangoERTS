@@ -262,3 +262,11 @@ def panel_pedidos(request):
         'pedidos': pedidos
     }
     return render(request, 'panel_pedidos.html', context)
+
+@staff_member_required
+def detalle_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    context = {
+        'pedido': pedido,
+    }
+    return render(request, 'detalle_pedido.html', context)
