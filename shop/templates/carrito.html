@@ -61,10 +61,7 @@
     <div class="row text-center">
         <div class="col-6"><a href="{% url 'limpiar' %}" class="btn btn-danger">Limpiar</a></div>
         <div class="col-6">
-            <form action="{% url 'procesar_pedido' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-success">Comprar</button>
-            </form>
+            <a href="{% url 'zona_pago' %}" class="btn btn-success">Comprar</a>
         </div>
     </div>
 </div>

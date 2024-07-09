@@ -20,7 +20,7 @@ from shop.forms import CustomAuthenticationForm
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from shop.views import agregar_producto_carrito,agregar_producto_carrito_otro , eliminar_producto_carrito, panel_pedidos, procesar_pedido, restar_producto_carrito, limpiar_carrito, tienda, carrito, comprar_producto, mis_pedidos,detalle_pedido
+from shop.views import agregar_producto_carrito,agregar_producto_carrito_otro , eliminar_producto_carrito, panel_pedidos, procesar_pedido, restar_producto_carrito, limpiar_carrito, tienda, carrito, comprar_producto, mis_pedidos,detalle_pedido, zona_pago
 from django.contrib.auth.views import LoginView
 
 urlpatterns = [
@@ -41,6 +41,7 @@ urlpatterns = [
     path('procesar_pedido/', procesar_pedido, name='procesar_pedido'),
     path('shop/pedidos/', panel_pedidos, name='panel_pedidos'), 
     path('pedido/<int:pedido_id>/', detalle_pedido, name='detalle_pedido'),
+     path('pago/', zona_pago, name='zona_pago'),
 
 ]
 

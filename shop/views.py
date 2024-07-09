@@ -1,6 +1,6 @@
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
-from .forms import ContactoForm, ProductoForm, CustomUserCreationForm
+from .forms import ContactoForm, ProductoForm, CustomUserCreationForm, DatosEnvioForm
 from .models import Pedido, PedidoItem, Producto, Carro
 from django.core.paginator import Paginator
 from django.contrib import messages
@@ -270,3 +270,39 @@ def detalle_pedido(request, pedido_id):
         'pedido': pedido,
     }
     return render(request, 'detalle_pedido.html', context)
+
+
+def zona_pago(request):
+    if request.method == 'POST':
+        form = DatosEnvioForm(request.POST)
+        if form.is_valid():
+            pedido = Pedido.objects.create(
+                usuario=request.user,
+                total=sum(item['acumulado'] for item in request.session['carrito'].values()),
+            )
+            
+            carrito = request.session['carrito']
+            for key, value in carrito.items():
+                PedidoItem.objects.create(
+                    pedido=pedido,
+                    producto_id=value['producto_id'],
+                    cantidad=value['cantidad'],
+                    subtotal=value['acumulado']
+                )
+            
+
+            del request.session['carrito']
+            
+            return redirect('mis_pedidos') 
+    else:
+        form = DatosEnvioForm()
+
+    carrito = request.session.get('carrito', {})
+    total_carrito = sum(item['acumulado'] for item in carrito.values())
+
+    context = {
+        'form': form,
+        'carrito': carrito,
+        'total_carrito': total_carrito,
+    }
+    return render(request, 'zona_pago.html', context)

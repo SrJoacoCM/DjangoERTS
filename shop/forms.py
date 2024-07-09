@@ -54,3 +54,9 @@ class CustomUserCreationForm(UserCreationForm):
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'})
         }
+        
+class DatosEnvioForm(forms.Form):
+    region = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    comuna = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    direccion = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    telefono = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))

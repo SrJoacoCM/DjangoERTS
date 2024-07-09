@@ -51,11 +51,35 @@ class Pedido(models.Model):
         ('TRANSITO', 'En Tránsito'),
         ('ENTREGADO', 'Entregado'),
     ]
+    
+    REGIONES_CHOICES = [
+        ('ARICA Y PARINACOTA', 'arica y parinacota'),
+        ('TARAPACA', 'tarapaca'),
+        ('ANTOFAGASTA', 'antofagasta'),
+        ('ATACAMA', 'atacama'),
+        ('COQUIMBO', 'coquimbo'),
+        ('VALPARAISO', 'valparaiso'),
+        ('METROPOLITANA', 'metropolitana'),
+        ('BERNARDO O\'HIGGINS', 'bernardo o\'higgins'),
+        ('MAULE', 'maule'),
+        ('BIO-BIO', 'bio-bio'),
+        ('ARAUCANIA', 'araucania'),
+        ('LOS RIOS', 'los rios'),
+        ('LOS LAGOS', 'los lagos'),
+        ('AYSÉN', 'aysen'),
+        ('MAGALLANES', 'magallanes'),
+    ]
+    
 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     total = models.DecimalField(max_digits=10, decimal_places=2)
     creado_en = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='PENDIENTE')
+    
+    region = models.CharField(max_length=100)
+    comuna = models.CharField(max_length=100, choices=REGIONES_CHOICES, default='BIO-BIO')
+    direccion = models.CharField(max_length=255)
+    telefono = models.CharField(max_length=20)
 
     def __str__(self):
         return f'Pedido #{self.id} - {self.usuario.username}'
